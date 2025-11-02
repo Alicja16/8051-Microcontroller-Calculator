@@ -1,0 +1,274 @@
+     1  0000: 02 01 00  	LJMP START
+     2  0100:           	ORG 100H
+     3  0100:           START:
+     4  0100: 75 81 1E      MOV SP, #30
+     5                  
+     6  0103:           MAIN:
+     7  0103: 12 81 0C      LCALL LCD_CLR
+     8  0106: 12 01 42      LCALL PIERWSZA_LICZBA
+     9  0109: E5 20         MOV A,' '
+    10  010B: 12 81 02      LCALL WRITE_DATA
+    11  010E: 12 01 5E      LCALL DRUGA_LICZBA
+    12  0111: E5 20         MOV A,' '
+    13  0113: 12 81 02      LCALL WRITE_DATA
+    14                  
+    15  0116: 74 2B         MOV A,#'+'
+    16  0118: 12 81 02      LCALL WRITE_DATA
+    17  011B: 74 2D         MOV A,#'-'
+    18  011D: 12 81 02      LCALL WRITE_DATA
+    19  0120: 74 2A         MOV A,#'*'
+    20  0122: 12 81 02      LCALL WRITE_DATA
+    21  0125: 74 2F         MOV A,#'/'
+    22  0127: 12 81 02      LCALL WRITE_DATA
+    23  012A: E5 20         MOV A,' '
+    24  012C: 12 81 02      LCALL WRITE_DATA
+    25  012F: E5 20         MOV A,' '
+    26  0131: 12 81 02      LCALL WRITE_DATA
+    27                  
+    28  0134: 12 01 7A      LCALL JAKA_OPERACJA
+    29                  
+    30  0137:           CZY_KONTYNUOWAC:
+    31  0137: 12 81 1C      LCALL WAIT_KEY
+    32  013A: B4 0A FA      CJNE A,#10, CZY_KONTYNUOWAC
+    33  013D: 80 C4         SJMP MAIN
+    34  013F:           STOP:
+    35  013F: 80 FE     	SJMP $
+    36  0141: 00        	NOP
+    37                  
+    38                  ;-------------------FUNKCJE----------------------
+    39                  
+    40  0142:           PIERWSZA_LICZBA:
+    41  0142: 74 41         MOV A,#'A'
+    42  0144: 12 81 02      LCALL WRITE_DATA
+    43  0147: 74 3D         MOV A,#'='
+    44  0149: 12 81 02      LCALL WRITE_DATA
+    45  014C: 12 81 1C      LCALL WAIT_KEY
+    46  014F: C0 E0         PUSH ACC
+    47  0151: 12 81 1C      LCALL WAIT_KEY
+    48  0154: C0 E0         PUSH ACC
+    49  0156: 12 01 99      LCALL BCD
+    50  0159: F9            MOV R1, A
+    51  015A: 12 81 04      LCALL WRITE_HEX
+    52  015D: 22            RET
+    53                  ;---------------------------
+    54  015E:           DRUGA_LICZBA:
+    55  015E: 74 42         MOV A,#'B'
+    56  0160: 12 81 02      LCALL WRITE_DATA
+    57  0163: 74 3D         MOV A,#'='
+    58  0165: 12 81 02      LCALL WRITE_DATA
+    59  0168: 12 81 1C      LCALL WAIT_KEY
+    60  016B: C0 E0         PUSH ACC
+    61  016D: 12 81 1C      LCALL WAIT_KEY
+    62  0170: C0 E0         PUSH ACC
+    63  0172: 12 01 99      LCALL BCD
+    64  0175: FA            MOV R2, A
+    65  0176: 12 81 04      LCALL WRITE_HEX
+    66  0179: 22            RET
+    67                  ;---------------------------
+    68  017A:           JAKA_OPERACJA:
+    69  017A: 12 81 1C      LCALL WAIT_KEY
+    70  017D: B4 0A 04      CJNE A,#10, CZY_ODEJMOWANIE
+    71  0180: 12 01 D7      LCALL DODAWANIE
+    72  0183: 22            RET
+    73                  
+    74  0184:           CZY_ODEJMOWANIE:
+    75  0184: B4 0B 04      CJNE A,#11, CZY_MNOZENIE
+    76  0187: 12 01 E8      LCALL ODEJMOWANIE
+    77  018A: 22            RET
+    78                  
+    79  018B:           CZY_MNOZENIE:
+    80  018B: B4 0C 04      CJNE A,#12, CZY_DZIELENIE
+    81  018E: 12 02 11      LCALL MNOZENIE
+    82  0191: 22            RET
+    83                  
+    84  0192:           CZY_DZIELENIE:
+    85  0192: B4 0D E5      CJNE A,#13, JAKA_OPERACJA
+    86  0195: 12 02 2E      LCALL DZIELENIE
+    87  0198: 22            RET
+    88                  ;---------------------------
+    89  0199:           BCD:
+    90  0199: D0 06         POP 06H
+    91  019B: D0 07         POP 07H
+    92  019D: D0 F0         POP B ; B=J
+    93  019F: D0 E0         POP ACC ; A=T
+    94  01A1: 54 0F         ANL A, #0FH
+    95  01A3: C4            SWAP A ; TT00
+    96  01A4: 53 F0 0F      ANL B, #0FH 
+    97  01A7: 45 F0         ORL A,B ; A=TTJJ
+    98  01A9: C0 07         PUSH 07H
+    99  01AB: C0 06         PUSH 06H
+   100  01AD: 22            RET
+   101                  ;---------------------------
+   102  01AE:           BCD_NA_HEX:
+   103  01AE: D0 06         POP 06H
+   104  01B0: D0 07         POP 07H
+   105  01B2: D0 E0         POP ACC
+   106  01B4: C0 F0         PUSH B
+   107                  
+   108  01B6: FC            MOV R4,A
+   109  01B7: 54 0F         ANL A, #0FH ; A=J
+   110  01B9: FD            MOV R5,A
+   111  01BA: EC            MOV A,R4
+   112  01BB: C4            SWAP A      ; 00TT
+   113  01BC: 54 0F         ANL A,#0FH  ; A=T
+   114  01BE: 75 F0 0A      MOV B,#10
+   115  01C1: A4            MUL AB      ; A=T*10
+   116  01C2: 2D            ADD A,R5   ; A=T*10 + J
+   117                  
+   118  01C3: D0 F0         POP B
+   119  01C5: C0 07         PUSH 07H
+   120  01C7: C0 06         PUSH 06H
+   121  01C9: 22            RET
+   122                  ;---------------------------
+   123  01CA:           BIN_NA_BCD:
+   124  01CA: 75 F0 0A      MOV B,#10
+   125  01CD: 84            DIV AB
+   126  01CE: C4            SWAP A
+   127  01CF: 54 F0         ANL A,#0F0H
+   128  01D1: 53 F0 0F      ANL B,#0FH
+   129  01D4: 45 F0         ORL A,B
+   130  01D6: 22            RET
+   131                  ;------------DZIAŁANIA--------------
+   132                  ; liczba A W R1
+   133                  ; liczba B W R2
+   134  01D7:           DODAWANIE:
+   135  01D7: E9            MOV A,R1
+   136  01D8: 2A            ADD A,R2
+   137  01D9: D4            DA A
+   138  01DA: FD            MOV R5, A
+   139                  
+   140  01DB: E4            CLR A
+   141  01DC: 34 00         ADDC A, #0
+   142  01DE: 44 30         ORL  A, #30H
+   143  01E0: 12 81 02      LCALL WRITE_DATA
+   144  01E3: ED            MOV A, R5
+   145  01E4: 12 81 04      LCALL WRITE_HEX
+   146  01E7: 22            RET
+   147                  ;---------------------------
+   148                  
+   149  01E8:           ODEJMOWANIE:
+   150  01E8: E9            MOV A,R1
+   151  01E9: C0 E0         PUSH ACC
+   152  01EB: 12 01 AE      LCALL BCD_NA_HEX
+   153  01EE: F9            MOV R1,A
+   154  01EF: EA            MOV A,R2
+   155  01F0: C0 E0         PUSH ACC
+   156  01F2: 12 01 AE      LCALL BCD_NA_HEX
+   157  01F5: FA            MOV R2, A
+   158  01F6: C3            CLR C
+   159  01F7: E9            MOV A,R1
+   160  01F8: 9A            SUBB A,R2
+   161  01F9: 40 07         JC ODWROC
+   162  01FB: 12 01 CA      LCALL BIN_NA_BCD
+   163  01FE: 12 81 04      LCALL WRITE_HEX
+   164  0201: 22            RET
+   165                  
+   166  0202:           ODWROC:
+   167  0202: 74 2D         MOV A,#'-'
+   168  0204: 12 81 02      LCALL WRITE_DATA
+   169  0207: C3            CLR C
+   170  0208: EA            MOV A,R2
+   171  0209: 99            SUBB A,R1
+   172  020A: 12 01 CA      LCALL BIN_NA_BCD
+   173  020D: 12 81 04      LCALL WRITE_HEX
+   174  0210: 22            RET
+   175                  ;---------------------------
+   176                  
+   177  0211:           MNOZENIE:
+   178  0211: E9            MOV A,R1
+   179  0212: C0 E0         PUSH ACC
+   180  0214: 12 01 AE      LCALL BCD_NA_HEX
+   181  0217: F9            MOV R1,A
+   182  0218: EA            MOV A,R2
+   183  0219: C0 E0         PUSH ACC
+   184  021B: 12 01 AE      LCALL BCD_NA_HEX
+   185  021E: FA            MOV R2, A
+   186  021F: E9            MOV A, R1
+   187  0220: 8A F0         MOV B, R2
+   188  0222: A4            MUL AB
+   189  0223: F9            MOV R1, A
+   190  0224: E5 F0         MOV A,B
+   191  0226: 12 81 04      LCALL WRITE_HEX
+   192  0229: E9            MOV A,R1
+   193  022A: 12 81 04      LCALL WRITE_HEX
+   194  022D: 22            RET
+   195                  
+   196                  ;---------------------------
+   197  022E:           DZIELENIE:
+   198  022E: EA            MOV A, R2
+   199  022F: 70 33         JNZ PODZIEL
+   200  0231: 74 5A         MOV A,#'Z'
+   201  0233: 12 81 02      LCALL WRITE_DATA
+   202  0236: 74 41         MOV A,#'A'
+   203  0238: 12 81 02      LCALL WRITE_DATA
+   204  023B: 74 42         MOV A,#'B'
+   205  023D: 12 81 02      LCALL WRITE_DATA
+   206  0240: 74 52         MOV A,#'R'
+   207  0242: 12 81 02      LCALL WRITE_DATA
+   208  0245: 74 4F         MOV A,#'O'
+   209  0247: 12 81 02      LCALL WRITE_DATA
+   210  024A: 74 4E         MOV A,#'N'
+   211  024C: 12 81 02      LCALL WRITE_DATA
+   212  024F: 74 49         MOV A,#'I'
+   213  0251: 12 81 02      LCALL WRITE_DATA
+   214  0254: 74 4F         MOV A,#'O'
+   215  0256: 12 81 02      LCALL WRITE_DATA
+   216  0259: 74 4E         MOV A,#'N'
+   217  025B: 12 81 02      LCALL WRITE_DATA
+   218  025E: 74 45         MOV A,#'E'
+   219  0260: 12 81 02      LCALL WRITE_DATA
+   220  0263: 22            RET
+   221                  
+   222  0264:           PODZIEL:
+   223  0264: E9            MOV A,R1
+   224  0265: C0 E0         PUSH ACC
+   225  0267: 12 01 AE      LCALL BCD_NA_HEX
+   226  026A: F9            MOV R1,A
+   227                  
+   228  026B: EA            MOV A,R2
+   229  026C: C0 E0         PUSH ACC
+   230  026E: 12 01 AE      LCALL BCD_NA_HEX
+   231  0271: FB            MOV R3, A
+   232                  
+   233  0272: E9            MOV A, R1
+   234  0273: 8B F0         MOV B, R3
+   235  0275: 84            DIV AB
+   236  0276: AC F0         MOV R4, B
+   237  0278: 12 01 CA      LCALL BIN_NA_BCD
+   238  027B: 12 81 04      LCALL WRITE_HEX
+   239                  
+   240  027E: 74 69         MOV A,#'i'
+   241  0280: 12 81 02      LCALL WRITE_DATA
+   242                  
+   243  0283: EC            MOV A,R4
+   244  0284: 12 01 CA      LCALL BIN_NA_BCD
+   245  0287: 12 81 04      LCALL WRITE_HEX
+   246                  
+   247  028A: 74 2F         MOV A,#'/'
+   248  028C: 12 81 02      LCALL WRITE_DATA
+   249  028F: EA            MOV A,R2
+   250  0290: 12 81 04      LCALL WRITE_HEX
+   251  0293: 22            RET
+   252                  ;---------------------------
+   253                  
+   254                  ; ZABRONIONE:
+   255                  ;     MOV A,#'Z'
+   256                  ;     LCALL WRITE_DATA
+   257                  ;     MOV A,#'A'
+   258                  ;     LCALL WRITE_DATA
+   259                  ;     MOV A,#'B'
+   260                  ;     LCALL WRITE_DATA
+   261                  ;     MOV A,#'R'
+   262                  ;     LCALL WRITE_DATA
+   263                  ;     MOV A,#'O'
+   264                  ;     LCALL WRITE_DATA
+   265                  ;     MOV A,#'N'
+   266                  ;     LCALL WRITE_DATA
+   267                  ;     MOV A,#'I'
+   268                  ;     LCALL WRITE_DATA
+   269                  ;     MOV A,#'O'
+   270                  ;     LCALL WRITE_DATA
+   271                  ;     MOV A,#'N'
+   272                  ;     LCALL WRITE_DATA
+   273                  ;     MOV A,#'E'
+   274                  ;     LCALL WRITE_DATA
