@@ -2,7 +2,6 @@
 	ORG 100H
 START:
     MOV SP, #30
-
 MAIN:
     LCALL LCD_CLR
     LCALL PIERWSZA_LICZBA
@@ -36,7 +35,6 @@ STOP:
 	NOP
 
 ;-------------------FUNKCJE----------------------
-
 PIERWSZA_LICZBA:
     MOV A,#'A'
     LCALL WRITE_DATA
@@ -145,7 +143,6 @@ DODAWANIE:
     LCALL WRITE_HEX
     RET
 ;---------------------------
-
 ODEJMOWANIE:
     MOV A,R1
     PUSH ACC
@@ -173,7 +170,6 @@ ODWROC:
     LCALL WRITE_HEX
     RET
 ;---------------------------
-
 MNOZENIE:
     MOV A,R1
     PUSH ACC
