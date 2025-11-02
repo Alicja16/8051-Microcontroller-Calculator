@@ -6,10 +6,10 @@ START:
 MAIN:
     LCALL LCD_CLR
     LCALL PIERWSZA_LICZBA
-    MOV A,' '
+    MOV A,#' '
     LCALL WRITE_DATA
     LCALL DRUGA_LICZBA
-    MOV A,' '
+    MOV A,#' '
     LCALL WRITE_DATA
 
     MOV A,#'+'
@@ -20,9 +20,9 @@ MAIN:
     LCALL WRITE_DATA
     MOV A,#'/'
     LCALL WRITE_DATA
-    MOV A,' '
+    MOV A,#' '
     LCALL WRITE_DATA
-    MOV A,' '
+    MOV A,#' '
     LCALL WRITE_DATA
 
     LCALL JAKA_OPERACJA
