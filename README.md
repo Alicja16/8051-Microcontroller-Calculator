@@ -18,7 +18,7 @@ Includes correct **BCD ↔ BIN** conversions and a safe **divide-by-zero** branc
 
 ---
 
-## Features
+## 🟠 Features
 
 * Two-digit decimal input for **A** and **B** (range 0–99)
 * Operation selection **by keys A/B/C/D**:
@@ -45,7 +45,7 @@ Includes correct **BCD ↔ BIN** conversions and a safe **divide-by-zero** branc
 
 ---
 
-## 💻 Run in DSM-51 Simulator
+## 🟠 Run in DSM-51 Simulator
 
 1. Launch **DSM-51.EXE (Simulator)**.
 2. *Load program* → select `Kalkulator.hex`.
@@ -56,7 +56,7 @@ Includes correct **BCD ↔ BIN** conversions and a safe **divide-by-zero** branc
 
 ---
 
-## 🔌 Run on DSM-51 Hardware Board
+## 🟠 Run on DSM-51 Hardware Board
 
 1. Open **DSM51Ass** (or your DSM-51 loader/programmer).
 2. Select **`Kalkulator.hex`** (Intel HEX) and upload to program memory.
@@ -65,7 +65,7 @@ Includes correct **BCD ↔ BIN** conversions and a safe **divide-by-zero** branc
 
 ---
 
-## Program flow
+## 🟠 Program flow
 
 1. `A=` → enter tens & ones.
 2. `B=` → enter tens & ones.
@@ -84,7 +84,7 @@ A ready **`.hex`** is provided. To rebuild, use DSM51Ass, or SDCC’s 8051 tools
 
 ---
 
-## Limitations & ideas
+## 🟠 Limitations & ideas
 
 * Two digits per operand (0–99)
 * No input correction/backspace
