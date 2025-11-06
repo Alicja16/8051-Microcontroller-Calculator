@@ -40,6 +40,7 @@ Includes correct **BCD ↔ BIN** conversions and a safe **divide-by-zero** branc
   * Division prints: `quotient i remainder/denominator`
 * Safe division: division by zero prints **ZABRONIONE**
 * Robust stack discipline (no `RET` corruption)
+* Efficient use of stack for parameter passing and temporary storage — intermediate data and return addresses are safely preserved across subroutines using PUSH/POP pairs.
 * Start a **new calculation** by pressing **A**
 
 ---
