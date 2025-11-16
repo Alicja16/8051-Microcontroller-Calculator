@@ -44,7 +44,7 @@ Includes correct **BCD ↔ BIN** conversions and a safe **divide-by-zero** branc
 * Start a **new calculation** by pressing **A**
 
 ---
-## 🖼 Screenshots (DSM-51 Simulator)
+## 🟠 Screenshots (DSM-51 Simulator)
 
 ### ➕ Calculation example: addition
 <p align="center">
