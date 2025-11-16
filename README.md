@@ -44,6 +44,24 @@ Includes correct **BCD ↔ BIN** conversions and a safe **divide-by-zero** branc
 * Start a **new calculation** by pressing **A**
 
 ---
+## 🖼 Screenshots (DSM-51 Simulator)
+
+### ➕ Calculation example: addition
+<p align="center">
+  <img width="910" height="518" alt="image" src="https://github.com/user-attachments/assets/1755f543-6b7a-414d-9c7c-bc5c30f50cf6" />
+</p>
+
+### ➗ Calculation example: division
+<p align="center">
+  <img width="910" height="518" alt="image" src="https://github.com/user-attachments/assets/72a54c68-015d-487c-865c-35b5b811c9cc" />
+</p>
+
+### 🚫 Divide by zero – ZABRONIONE
+<p align="center">
+  <img width="910" height="518" alt="image" src="https://github.com/user-attachments/assets/76413d55-af57-4035-8f23-c8c8cf45b49e" />
+</p>
+
+---
 
 ## 🟠 Run in DSM-51 Simulator
 
